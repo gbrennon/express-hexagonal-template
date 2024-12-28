@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "strict": true, // Enables all strict type-checking options
+    "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "strictBindCallApply": true,
@@ -23,11 +23,19 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
     "noImplicitAny": false,
-    "forceConsistentCasingInFileNames": false
+    "forceConsistentCasingInFileNames": false,
+    "baseUrl": "./src",
+    "paths": {
+      "@src/*": ["*"],
+      "@domain/*": ["domain/*"],
+      "@application/*": ["application/*"],
+      "@infrastructure/*": ["infrastructure/*"],
+      "@presentation/*": ["presentation/*"],
+      "@shared/*": ["shared/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
