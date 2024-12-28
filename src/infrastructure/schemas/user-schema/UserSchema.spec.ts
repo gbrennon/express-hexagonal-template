@@ -10,6 +10,19 @@ describe('UserSchema', () => {
     });
   });
 
+  describe('fromDomain', () => {
+    it('should return a UserSchema', () => {
+      const user = new User('1', 'John Doe', 'johndoe@gmail.com', '12345678');
+
+      const userSchema = UserSchema.fromDomain(user);
+
+      expect(userSchema.id).toBe(user.id);
+      expect(userSchema.name).toBe(user.name);
+      expect(userSchema.email).toBe(user.email);
+      expect(userSchema.password).toBe(user.password);
+    });
+  });
+
   describe('toDomain', () => {
     it('should return a User entity', () => {
       const userSchema = new UserSchema();

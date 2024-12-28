@@ -40,4 +40,15 @@ export class UserSchema {
   toDomain(): User {
     return new User(this.id, this.name, this.email, this.password);
   }
+
+  static fromDomain(user: User): UserSchema {
+    const userSchema = new UserSchema();
+
+    userSchema.id = user.id;
+    userSchema.name = user.name;
+    userSchema.email = user.email;
+    userSchema.password = user.password;
+
+    return userSchema;
+  }
 }
