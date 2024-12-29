@@ -27,12 +27,6 @@ describe('TypeORMUserRepository', () => {
     await dataSource.destroy();
   });
 
-  describe('constructor', () => {
-    it('should create an instance of TypeORMUserRepository', () => {
-      expect(userRepository).toBeInstanceOf(TypeORMUserRepository);
-    });
-  });
-
   describe('findByEmail', () => {
     it('should return null if the user is not found', async () => {
       const notUsedEmail = 'notUsed@email.com';

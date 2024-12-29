@@ -1,4 +1,4 @@
-import { User } from '@src/domain/entities/User';
+import { User } from '@domain/entities/User';
 import { UserSchema } from './UserSchema';
 
 describe('UserSchema', () => {

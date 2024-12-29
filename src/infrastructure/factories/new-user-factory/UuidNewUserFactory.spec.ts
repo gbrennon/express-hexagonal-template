@@ -1,4 +1,4 @@
-import { User } from '@src/domain/entities/User';
+import { User } from '@domain/entities/User';
 import { UuidNewUserFactory } from './UuidNewUserFactory';
 
 describe('UuidNewUserFactory', () => {
