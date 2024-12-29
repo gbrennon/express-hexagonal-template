@@ -16,7 +16,7 @@ export class UserSchema {
   @Column()
   public name!: string;
 
-  @Column()
+  @Column({ unique: true })
   public email!: string;
 
   @Column()
