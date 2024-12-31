@@ -1,23 +1,28 @@
-import express, { Request, Response, NextFunction } from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import morgan from 'morgan';
+// process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+// process.env.NODE_ENV = 'test';
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+import { Server } from '@infrastructure/server/Server';
 
-// Routes
-app.get('/health', (_: Request, res: Response) => {
-  res.status(200).send({ message: 'Server is healthy' });
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+
+// Create a new instance of the Server
+const server = new Server(PORT);
+
+// Start the server
+server.start().catch((error) => {
+  console.error('Failed to start the server:', error);
+  process.exit(1);
 });
 
-// Error Handling Middleware
-app.use((err: any, _: Request, res: Response, __: NextFunction) => {
-  console.error(err.stack);
-  res.status(500).send({ error: 'Internal Server Error' });
+// Gracefully handle shutdown signals
+process.on('SIGTERM', async () => {
+  console.info('SIGTERM signal received. Closing the server gracefully...');
+  await server.close();
+  process.exit(0);
 });
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+process.on('SIGINT', async () => {
+  console.info('SIGINT signal received. Closing the server gracefully...');
+  await server.close();
+  process.exit(0);
 });
