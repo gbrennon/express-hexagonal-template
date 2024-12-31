@@ -27,14 +27,13 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "forceConsistentCasingInFileNames": false,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "@domain/*": ["src/domain/*"],
-      "@application/*": ["src/application/*"],
-      "@infrastructure/*": ["src/infrastructure/*"],
-      "@presentation/*": ["src/presentation/*"],
-      "@shared/*": ["src/shared/*"],
-      "@test/*": ["test/*"]
+      "@domain/*": ["domain/*"],
+      "@application/*": ["application/*"],
+      "@infrastructure/*": ["infrastructure/*"],
+      "@presentation/*": ["presentation/*"],
+      "@shared/*": ["shared/*"]
     }
   },
   "include": ["src/**/*"],
