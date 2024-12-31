@@ -6,11 +6,6 @@ import morgan from 'morgan';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middlewares
-app.use(bodyParser.json());
-app.use(cors());
-app.use(morgan('dev'));
-
 // Routes
 app.get('/health', (_: Request, res: Response) => {
   res.status(200).send({ message: 'Server is healthy' });
