@@ -9,7 +9,7 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/index.js",
-    "start:dev": "ts-node-dev --respawn src/index.ts",
+    "start:dev": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts",
     "type-check": "tsc --noEmit",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
@@ -23,6 +23,7 @@
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "morgan": "^1.10.0",
+    "pg": "^8.13.1",
     "typeorm": "^0.3.20",
     "uuid": "^11.0.3",
     "winston": "^3.17.0"
