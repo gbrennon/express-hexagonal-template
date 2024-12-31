@@ -1,15 +1,20 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsString, MinLength } from 'class-validator';
 
 export class CreateUserHttpDTO {
-  @IsNotEmpty()
   @IsString()
-   name!: string;
+  @MinLength(3)
+   name: string;
 
-   @IsNotEmpty()
    @IsEmail()
-   email!: string;
+   email: string;
 
-   @IsNotEmpty()
+   @IsString()
    @MinLength(8)
-   password!: string;
+   password: string;
+
+   constructor(name: string, email: string, password: string) {
+     this.name = name;
+     this.email = email;
+     this.password = password;
+   }
 }

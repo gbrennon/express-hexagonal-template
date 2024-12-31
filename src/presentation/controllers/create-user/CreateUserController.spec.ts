@@ -1,40 +1,81 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserService } from '@application/create-user';
 import { CreateUserController } from './CreateUserController';
-import { CreateUserHttpDTO } from './dtos/CreateUserHttpDTO';
+import { Request, Response } from 'express';
 import { mock, instance, when, anything } from 'ts-mockito';
 
 describe('CreateUserController', () => {
-  let controller: CreateUserController;
   let createUserService: CreateUserService;
+  let controller: CreateUserController;
+  let req: Partial<Request>;
+  let res: Partial<Response>;
 
-  beforeEach(async () => {
-    const mockedCreateUserService = mock(CreateUserService);
+  beforeEach(() => {
+    createUserService = mock(CreateUserService);
+    controller = new CreateUserController(instance(createUserService));
 
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [CreateUserController],
-      providers: [{
-        provide: CreateUserService,
-        useValue: instance(mockedCreateUserService),
-      }],
-    }).compile();
+    req = {
+      body: {}
+    } as Partial<Request>;
 
-    controller = module.get<CreateUserController>(CreateUserController);
-    createUserService = instance(mockedCreateUserService);
+    res = {
+      status: jest.fn().mockReturnThis() as unknown as Response['status'],
+      json: jest.fn()
+    } as Partial<Response>;
   });
 
-  describe('POST /users', () => {
-    it('should return the id of the created user', async () => {
+  describe('handle', () => {
+    it('should return 400 if validation fails', async () => {
+      req.body = {
+        name: '',
+        email: 'invalid-email',
+        password: 'short'
+      };
+
+      await controller.handle(req as Request, res as Response);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'Validation failed',
+        errors: expect.any(Array)
+      });
     });
 
-    it('should call the service with the right parameters', async () => {
+    it('should return 201 if the user is created', async () => {
+      req.body = {
+        name: 'John Doe',
+        email: 'john.doe@email.com',
+        password: 'password'
+      };
+      const userId = '123e4567-e89b-12d3-a456-426614174000';
+
+      when(createUserService.execute(anything())).thenResolve({
+        id: userId
+      });
+
+      await controller.handle(req as Request, res as Response);
+
+      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.json).toHaveBeenCalledWith({
+        id: userId,
+      });
     });
 
-    it('should return 201 status code', async () => {
-    });
+    it('should return 500 if an error occurs', async () => {
+      req.body = {
+        name: 'John Doe',
+        email: 'john.doe@email.com',
+        password: 'password'
+      };
 
-    it('should throw an error if the service throws an error', async () => {
+      when(createUserService.execute(anything())).thenReject(new Error('Service error'));
+
+      await controller.handle(req as Request, res as Response);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'Service error'
+      });
     });
   });
-
 });
+
